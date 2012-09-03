@@ -51,7 +51,11 @@ namespace Nancy.Serialization.JsonNet
         /// <returns>Serialised object</returns>
         public void Serialize<TModel>(string contentType, TModel model, Stream outputStream)
         {
-            _jsonSerializer.Serialize(new StreamWriter(outputStream), model);
+            using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
+            {
+                _jsonSerializer.Serialize(writer, model);
+                writer.Flush();
+            }
         }
     }
 }

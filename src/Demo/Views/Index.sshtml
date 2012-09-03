@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Nancy.Serializers.Json.ServiceStack Demo</title>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+    <script type="text/javascript">
+		function postJson()
+		{
+			/* Naughty over posting */
+			var dat = "{\"Id\":1,\"Name\":\"Fenella\",\"Age\":87,\"Location\":\"Spout Hall\"}";
+
+			alert("POSTing the following data to /json/2:\n\n" + dat);
+
+			$.ajax({
+                 type: "POST",
+                 url: "/json/2",
+                 contentType: "application/json",
+                 data: dat,
+                 success: function (data) {
+                     alert("Response:\n" + data);
+                 }
+             });
+
+             var dat = "{\"id\":1,\"name\":\"fenella\",\"age\":87,\"location\":\"Spout Hall\"}";
+
+			 alert("POSTing the following data to /json/2:\n\n" + dat);
+
+			 $.ajax({
+                 type: "POST",
+                 url: "/json/2",
+                 contentType: "application/json",
+                 data: dat,
+                 success: function (data) {
+                     alert("Response:\n" + data);
+                 }
+             });
+		}
+	</script>
+</head>
+<body>
+	<a href="@Path['~/json'];">Get me some JSON</a></br>
+	<input type="button" value="Post me some JSON" onclick="postJson();"/>
+</body>
+</html>

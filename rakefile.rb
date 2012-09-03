@@ -31,7 +31,7 @@ assemblyinfo :version => [:clean] do |asm|
     asm.company_name = "Nancy"
     asm.product_name = "Nancy.Serialization.JsonNet"
     asm.title = "Nancy.Serialization.JsonNet"
-    asm.description = "Provides JSON (de)serialization support using JsonNet.Text."
+    asm.description = "Provides JSON (de)serialization support using Newtonsoft.JsonNet."
     asm.copyright = "Copyright (C) Andreas Hakansson, Steven Robbins and contributors"
     asm.output_file = SHARED_ASSEMBLY_INFO
 end
