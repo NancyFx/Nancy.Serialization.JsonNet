@@ -6,12 +6,14 @@
 
     public class JsonNetJsonSerializer : ISerializer
     {
-        private readonly JsonSerializer _jsonSerializer = new JsonSerializer();
+        private readonly JsonSerializer serializer = new JsonSerializer();
         
         /// <summary>
         /// Empty constructor if no converters are needed
         /// </summary>
-        public JsonNetJsonSerializer(){}
+        public JsonNetJsonSerializer()
+        {
+        }
 
         /// <summary>
         /// Constructor to use when json converters are needed.
@@ -20,7 +22,9 @@
         public JsonNetJsonSerializer(IEnumerable<JsonConverter> converters)
         {
             foreach (var converter in converters)
-                _jsonSerializer.Converters.Add(converter);
+            {
+                this.serializer.Converters.Add(converter);
+            }
         }
 
         /// <summary>
@@ -53,7 +57,7 @@
         {
             using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
             {
-                _jsonSerializer.Serialize(writer, model);
+                this.serializer.Serialize(writer, model);
                 writer.Flush();
             }
         }

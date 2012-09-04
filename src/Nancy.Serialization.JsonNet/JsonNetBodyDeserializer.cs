@@ -10,12 +10,14 @@
 
     public class JsonNetBodyDeserializer : IBodyDeserializer
     {
-        private readonly JsonSerializer _jsonSerializer = new JsonSerializer();
+        private readonly JsonSerializer serializer = new JsonSerializer();
         
         /// <summary>
         /// Empty constructor if no converters are needed
         /// </summary>
-        public JsonNetBodyDeserializer(){}
+        public JsonNetBodyDeserializer()
+        {
+        }
 
         /// <summary>
         /// Constructor to use when json converters are needed.
@@ -24,7 +26,9 @@
         public JsonNetBodyDeserializer(IEnumerable<JsonConverter> converters)
         {
             foreach (var converter in converters)
-                _jsonSerializer.Converters.Add(converter);
+            {
+                this.serializer.Converters.Add(converter);
+            }
         }
 
         /// <summary>
@@ -46,29 +50,30 @@
         /// <returns>Model instance</returns>
         public object Deserialize(string contentType, Stream bodyStream, BindingContext context)
         {
-            var deserializedObject = _jsonSerializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
+            var deserializedObject = 
+                this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
             
             if (context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Except(context.ValidModelProperties).Any())
             {
-                return this.CreateObjectWithBlacklistExcluded(context, deserializedObject);
+                return CreateObjectWithBlacklistExcluded(context, deserializedObject);
             }
 
             return deserializedObject;
         }
 
-        private object CreateObjectWithBlacklistExcluded(BindingContext context, object deserializedObject)
+        private static object CreateObjectWithBlacklistExcluded(BindingContext context, object deserializedObject)
         {
             var returnObject = Activator.CreateInstance(context.DestinationType);
 
             foreach (var property in context.ValidModelProperties)
             {
-                this.CopyPropertyValue(property, deserializedObject, returnObject);
+                CopyPropertyValue(property, deserializedObject, returnObject);
             }
 
             return returnObject;
         }
 
-        private void CopyPropertyValue(PropertyInfo property, object sourceObject, object destinationObject)
+        private static void CopyPropertyValue(PropertyInfo property, object sourceObject, object destinationObject)
         {
             property.SetValue(destinationObject, property.GetValue(sourceObject, null), null);
         }
