@@ -4,23 +4,23 @@
     using System.IO;
     using Newtonsoft.Json;
 
-    public class JsonNetJsonSerializer : ISerializer
+    public class JsonNetSerializer : ISerializer
     {
         private readonly JsonSerializer serializer = new JsonSerializer();
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonNetJsonSerializer"/> class.
+        /// Initializes a new instance of the <see cref="JsonNetSerializer"/> class.
         /// </summary>
-        public JsonNetJsonSerializer()
+        public JsonNetSerializer()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonNetJsonSerializer"/> class,
+        /// Initializes a new instance of the <see cref="JsonNetSerializer"/> class,
         /// with the provided <paramref name="converters"/>.
         /// </summary>
         /// <param name="converters">Json converters used when serializing.</param>
-        public JsonNetJsonSerializer(IEnumerable<JsonConverter> converters)
+        public JsonNetSerializer(IEnumerable<JsonConverter> converters)
         {
             foreach (var converter in converters)
             {
