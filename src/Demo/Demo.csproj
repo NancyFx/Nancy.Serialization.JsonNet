@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoBootstrapper.cs" />
+    <Compile Include="DemoModel.cs" />
     <Compile Include="DemoModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

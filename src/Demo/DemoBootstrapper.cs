@@ -12,7 +12,7 @@
             {
                 // Insert at position 0 so it takes precedence over the built in one.
                 return NancyInternalConfiguration.WithOverrides(
-                        c => c.Serializers.Insert(0, typeof(JsonNetJsonSerializer)));
+                        c => c.Serializers.Insert(0, typeof(JsonNetSerializer)));
             }
         }
     }

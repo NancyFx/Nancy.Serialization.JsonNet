@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Helpers.cs" />
     <Compile Include="JsonNetBodyDeserializer.cs" />
-    <Compile Include="JsonNetJsonSerializer.cs" />
+    <Compile Include="JsonNetSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
