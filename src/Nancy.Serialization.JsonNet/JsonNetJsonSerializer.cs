@@ -9,14 +9,15 @@
         private readonly JsonSerializer serializer = new JsonSerializer();
         
         /// <summary>
-        /// Empty constructor if no converters are needed
+        /// Initializes a new instance of the <see cref="JsonNetJsonSerializer"/> class.
         /// </summary>
         public JsonNetJsonSerializer()
         {
         }
 
         /// <summary>
-        /// Constructor to use when json converters are needed.
+        /// Initializes a new instance of the <see cref="JsonNetJsonSerializer"/> class,
+        /// with the provided <paramref name="converters"/>.
         /// </summary>
         /// <param name="converters">Json converters used when serializing.</param>
         public JsonNetJsonSerializer(IEnumerable<JsonConverter> converters)
