@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-
-namespace Nancy.Serialization.JsonNet
+﻿namespace Nancy.Serialization.JsonNet
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using Newtonsoft.Json;
+
     public class JsonNetJsonSerializer : ISerializer
     {
         private readonly JsonSerializer _jsonSerializer = new JsonSerializer();

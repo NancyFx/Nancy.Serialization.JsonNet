@@ -1,8 +1,8 @@
-﻿using Nancy;
-using Nancy.ModelBinding;
-
-namespace Demo
+﻿namespace Demo
 {
+    using Nancy;
+    using Nancy.ModelBinding;
+
     public class DemoModule : NancyModule
     {
         public DemoModule()

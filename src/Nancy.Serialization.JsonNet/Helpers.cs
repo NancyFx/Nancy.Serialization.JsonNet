@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Nancy.Serialization.JsonNet
+﻿namespace Nancy.Serialization.JsonNet
 {
+    using System;
+
     internal static class Helpers
     {
         /// <summary>

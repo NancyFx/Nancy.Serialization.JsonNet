@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Nancy.ModelBinding;
-using Newtonsoft.Json;
-
-namespace Nancy.Serialization.JsonNet
+﻿namespace Nancy.Serialization.JsonNet
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using Nancy.ModelBinding;
+    using Newtonsoft.Json;
+
     public class JsonNetBodyDeserializer : IBodyDeserializer
     {
         private readonly JsonSerializer _jsonSerializer = new JsonSerializer();

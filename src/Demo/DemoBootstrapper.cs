@@ -1,9 +1,9 @@
-﻿using Nancy;
-using Nancy.Bootstrapper;
-using Nancy.Serialization.JsonNet;
-
-namespace Demo
+﻿namespace Demo
 {
+    using Nancy;
+    using Nancy.Bootstrapper;
+    using Nancy.Serialization.JsonNet;
+
     public class DemoBootstrapper : DefaultNancyBootstrapper
     {
         protected override NancyInternalConfiguration InternalConfiguration
