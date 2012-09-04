@@ -8,7 +8,7 @@ NANCY_VERSION = ""
 OUTPUT = "build"
 CONFIGURATION = 'Release'
 SHARED_ASSEMBLY_INFO = 'dependencies/Nancy/src/SharedAssemblyInfo.cs'
-SOLUTION_FILE = 'src/Nancy.Serialization.JsonNet/Nancy.Serialization.JsonNet.sln'
+SOLUTION_FILE = 'src/Nancy.Serialization.JsonNet.sln'
 
 Albacore.configure do |config|
     config.log_level = :verbose
