@@ -1,4 +1,6 @@
-﻿namespace Nancy.Serialization.JsonNet
+﻿using Nancy.IO;
+
+namespace Nancy.Serialization.JsonNet
 {
     using System.Collections.Generic;
     using System.IO;
@@ -56,10 +58,9 @@
         /// <returns>Serialised object</returns>
         public void Serialize<TModel>(string contentType, TModel model, Stream outputStream)
         {
-            using (var writer = new JsonTextWriter(new StreamWriter(outputStream)))
+            using (var writer = new JsonTextWriter(new StreamWriter(new UnclosableStreamWrapper(outputStream))))
             {
-                this.serializer.Serialize(writer, model);
-                writer.Flush();
+                this.serializer.Serialize(writer, model);               
             }
         }
     }
