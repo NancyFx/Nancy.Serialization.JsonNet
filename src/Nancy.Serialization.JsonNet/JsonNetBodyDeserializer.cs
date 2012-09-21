@@ -1,7 +1,6 @@
 ﻿namespace Nancy.Serialization.JsonNet
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -10,25 +9,23 @@
 
     public class JsonNetBodyDeserializer : IBodyDeserializer
     {
-        private readonly JsonSerializer serializer = new JsonSerializer();
+        private readonly JsonSerializer serializer;
         
         /// <summary>
         /// Empty constructor if no converters are needed
         /// </summary>
         public JsonNetBodyDeserializer()
         {
+            this.serializer = new JsonSerializer();
         }
 
         /// <summary>
-        /// Constructor to use when json converters are needed.
+        /// Constructor to use when a custom serializer are needed.
         /// </summary>
-        /// <param name="converters">Json converters used when deserializing.</param>
-        public JsonNetBodyDeserializer(IEnumerable<JsonConverter> converters)
+        /// <param name="converters">Json serializer used when deserializing.</param>
+        public JsonNetBodyDeserializer(JsonSerializer serializer)
         {
-            foreach (var converter in converters)
-            {
-                this.serializer.Converters.Add(converter);
-            }
+            this.serializer = serializer;
         }
 
         /// <summary>

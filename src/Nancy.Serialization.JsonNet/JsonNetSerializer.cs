@@ -9,26 +9,24 @@ namespace Nancy.Serialization.JsonNet
 
     public class JsonNetSerializer : ISerializer
     {
-        private readonly JsonSerializer serializer = new JsonSerializer();
+        private readonly JsonSerializer serializer;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonNetSerializer"/> class.
         /// </summary>
         public JsonNetSerializer()
         {
+            this.serializer = new JsonSerializer();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonNetSerializer"/> class,
-        /// with the provided <paramref name="converters"/>.
+        /// with the provided <paramref name="serializer"/>.
         /// </summary>
         /// <param name="converters">Json converters used when serializing.</param>
-        public JsonNetSerializer(IEnumerable<JsonConverter> converters)
+        public JsonNetSerializer(JsonSerializer serializer)
         {
-            foreach (var converter in converters)
-            {
-                this.serializer.Converters.Add(converter);
-            }
+            this.serializer = serializer;
         }
 
         /// <summary>
