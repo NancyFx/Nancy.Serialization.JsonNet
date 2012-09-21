@@ -4,6 +4,7 @@ namespace Nancy.Serialization.JsonNet
 {
     using System.Collections.Generic;
     using System.IO;
+    using Nancy.IO;
     using Newtonsoft.Json;
 
     public class JsonNetSerializer : ISerializer

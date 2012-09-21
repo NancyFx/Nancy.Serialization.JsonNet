@@ -48,9 +48,10 @@ task :publish => [:compile] do
     Dir.mkdir(OUTPUT)
     Dir.mkdir("#{OUTPUT}/binaries")
 
-    FileUtils.cp_r FileList["src/Nancy.Serialization.JsonNet/**/#{CONFIGURATION}/*.dll", "src/Nancy.Serialization.JsonNet/**/#{CONFIGURATION}/*.pdb"].exclude(/obj\//).exclude(/.Tests/), "#{OUTPUT}/binaries"
+    FileUtils.cp_r FileList["src/**/#{CONFIGURATION}/*.dll", "src/**/#{CONFIGURATION}/*.pdb"].exclude(/obj\//).exclude(/.Tests/), "#{OUTPUT}/binaries"
 end
 
+desc "Executes xUnit tests"
 task :xunit => :compile do
   puts "No tests"
 end
@@ -66,8 +67,8 @@ end
 
 desc "Generates NuGet packages for each project that contains a nuspec"
 task :nuget_package => [:publish] do
-    Dir.mkdir("#{OUTPUT}/nuget")
-    nuspecs = FileList["src/Nancy.Serialization.JsonNet/Nancy.Serialization.JsonNet/*.nuspec"]
+	Dir.mkdir("#{OUTPUT}/nuget")
+    nuspecs = FileList["src/Nancy.Serialization.JsonNet/*.nuspec"]
     root = File.dirname(__FILE__)
 
     # Copy all project *.nuspec to nuget build folder before editing
