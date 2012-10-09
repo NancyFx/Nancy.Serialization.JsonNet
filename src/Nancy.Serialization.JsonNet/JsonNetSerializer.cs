@@ -1,6 +1,4 @@
-﻿using Nancy.IO;
-
-namespace Nancy.Serialization.JsonNet
+﻿namespace Nancy.Serialization.JsonNet
 {
     using System.Collections.Generic;
     using System.IO;
