@@ -1,9 +1,11 @@
 ﻿namespace Nancy.Serialization.JsonNet
 {
     using System;
+    using System.Collections;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Nancy.Extensions;
     using Nancy.ModelBinding;
     using Newtonsoft.Json;
 
@@ -58,9 +60,29 @@
             return deserializedObject;
         }
 
+        private static object ConvertCollection(object items, Type destinationType, BindingContext context)
+        {
+            var returnCollection = Activator.CreateInstance(destinationType);
+
+            var collectionAddMethod =
+                destinationType.GetMethod("Add", BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var item in (IEnumerable)items)
+            {
+                collectionAddMethod.Invoke(returnCollection, new[] { item });
+            }
+
+            return returnCollection;
+        }
+
         private static object CreateObjectWithBlacklistExcluded(BindingContext context, object deserializedObject)
         {
             var returnObject = Activator.CreateInstance(context.DestinationType);
+
+            if (context.DestinationType.IsCollection())
+            {
+                return ConvertCollection(deserializedObject, context.DestinationType, context);
+            }
 
             foreach (var property in context.ValidModelProperties)
             {

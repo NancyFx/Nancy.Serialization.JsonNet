@@ -17,7 +17,7 @@ Albacore.configure do |config|
 end
 
 desc "Compiles solution and runs unit tests"
-task :default => [:clean, :version, :compile, :publish, :package]
+task :default => [:clean, :version, :compile, :xunit, :publish, :package]
 
 #Add the folders that should be cleaned as part of the clean task
 CLEAN.include(OUTPUT)
@@ -52,8 +52,11 @@ task :publish => [:compile] do
 end
 
 desc "Executes xUnit tests"
-task :xunit => :compile do
-  puts "No tests"
+xunit :xunit => :compile do |xunit|
+    tests = FileList["src/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
+
+    xunit.command = "tools/xunit/xunit.console.clr4.x86.exe"
+    xunit.assemblies = tests
 end
 
 desc "Zips up the built binaries for easy distribution"
