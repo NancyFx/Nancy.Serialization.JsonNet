@@ -56,7 +56,7 @@ namespace Nancy.Serialization.JsonNet.Tests
     }
     public class TestBootstrapper : ConfigurableBootstrapper
     {
-        public TestBootstrapper(Action<ConfigurableBoostrapperConfigurator> configuration)
+        public TestBootstrapper(Action<ConfigurableBootstrapperConfigurator> configuration)
             : base(configuration)
         {
         }
