@@ -68,6 +68,15 @@ zip :package => [:publish] do |zip|
     zip.output_path = "#{OUTPUT}/packages"
 end
 
+desc "Deletes symbol packages"
+task :nuget_nuke_symbol_packages do
+  nupkgs = FileList['**/*.Symbols.nupkg']
+  nupkgs.each do |nupkg|
+    puts "Deleting #{nupkg}"
+    FileUtils.rm(nupkg)
+  end
+end
+
 desc "Generates NuGet packages for each project that contains a nuspec"
 task :nuget_package => [:publish] do
 	Dir.mkdir("#{OUTPUT}/nuget")
