@@ -1,5 +1,5 @@
-How to build Nancy
-==================
+How to build Nancy.Serialization.JsonNet
+========================================
 
 *NOTE* These instructions are *only* for building with Rake - if you just want to build Nancy manually you can do so just by loading the solution into Visual Studio and pressing build :-)
 
