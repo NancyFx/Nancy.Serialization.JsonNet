@@ -2,7 +2,7 @@ Implementations of the ISerialization and IBodyDeserializer interfaces, based on
 
 ## Usage
 
-Start of by installing the `Nancy.Serializers.JsonNet` nuget
+Start of by installing the `Nancy.Serialization.JsonNet` nuget
 
 When Nancy detects that the `JsonNetSerializer` and `JsonNetBodyDeserializer` types are available in the AppDomain, of your application, it will assume you want to use them, rather than the default ones.
 
