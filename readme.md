@@ -21,7 +21,7 @@ public class CustomJsonSerializer : JsonSerializer
 }
 ```
 
-In order for Nancy to know that you want to use the new configuration, you need to register it in your bootstrapper. Here is an example of how you would do that using the `DefaultNancyBootrapper`
+In order for Nancy to know that you want to use the new configuration, you need to register it in your bootstrapper. Here is an example of how you would do that using the `DefaultNancyBootstrapper`
 
 ```c#
 public class Bootstrapper : DefaultNancyBootstrapper
