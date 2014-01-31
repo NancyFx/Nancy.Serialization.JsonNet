@@ -53,31 +53,34 @@
             var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
-            var existingInstance = false;
-            foreach (var property in context.ValidModelProperties)
+            if (!context.DestinationType.IsCollection())
             {
-                var existingValue = property.GetValue(context.Model, null);
-
-                if (!IsDefaultValue(existingValue, property.PropertyType))
-                {
-                    existingInstance = true;
-                    break;
-                }
-            }
-
-            if (existingInstance)
-            {
+                var existingInstance = false;
                 foreach (var property in context.ValidModelProperties)
                 {
                     var existingValue = property.GetValue(context.Model, null);
 
-                    if (IsDefaultValue(existingValue, property.PropertyType))
+                    if (!IsDefaultValue(existingValue, property.PropertyType))
                     {
-                        CopyPropertyValue(property, deserializedObject, context.Model);
+                        existingInstance = true;
+                        break;
                     }
                 }
 
-                return context.Model;
+                if (existingInstance)
+                {
+                    foreach (var property in context.ValidModelProperties)
+                    {
+                        var existingValue = property.GetValue(context.Model, null);
+
+                        if (IsDefaultValue(existingValue, property.PropertyType))
+                        {
+                            CopyPropertyValue(property, deserializedObject, context.Model);
+                        }
+                    }
+
+                    return context.Model;
+                }
             }
 
             if (context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Except(context.ValidModelProperties).Any())
