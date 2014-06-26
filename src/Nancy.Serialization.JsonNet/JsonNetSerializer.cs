@@ -14,7 +14,7 @@
         /// </summary>
         public JsonNetSerializer()
         {
-            this.serializer = new JsonSerializer();
+            this.serializer = JsonSerializer.CreateDefault();
         }
 
         /// <summary>
