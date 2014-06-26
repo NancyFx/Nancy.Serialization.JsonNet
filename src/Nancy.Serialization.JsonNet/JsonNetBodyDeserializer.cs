@@ -18,7 +18,7 @@
         /// </summary>
         public JsonNetBodyDeserializer()
         {
-            this.serializer = new JsonSerializer();
+            this.serializer = JsonSerializer.CreateDefault();
         }
 
         /// <summary>
