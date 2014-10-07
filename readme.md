@@ -30,7 +30,7 @@ public class Bootstrapper : DefaultNancyBootstrapper
     {
         base.ConfigureApplicationContainer(container);
 
-        container.Register(typeof(JsonSerializer), typeof(CustomJsonSerializer));
+        container.Register<JsonSerializer, CustomJsonSerializer>();
     }
 }
 ```
