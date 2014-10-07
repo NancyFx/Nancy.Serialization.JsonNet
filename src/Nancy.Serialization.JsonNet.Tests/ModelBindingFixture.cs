@@ -53,6 +53,67 @@ namespace Nancy.Serialization.JsonNet.Tests
             // Then
             Assert.Equal(2, int.Parse(result.Body.AsString()));
         }
+
+        [Fact]
+        public void Should_BindTo_Existing_Instance_Using_Body_Serializer()
+        {
+            //Given
+            var module = new ConfigurableNancyModule(c => c.Post("/instance", (_, m) =>
+            {
+                var model = new Stuff() { Id = 1 };
+                m.BindTo(model);
+                return model;
+            }));
+
+            var bootstrapper = new TestBootstrapper(config => config.Module(module));
+
+            var postmodel = new Stuff { Name = "Marsellus Wallace" };
+
+            var browser = new Browser(bootstrapper);
+            
+            //When
+            var result = browser.Post("/instance", with =>
+            {
+                with.JsonBody(postmodel, new JsonNetSerializer());
+                with.Accept("application/json");
+            });
+
+            var resultModel = result.Body.DeserializeJson<Stuff>();
+
+            //Then
+            Assert.Equal("Marsellus Wallace", resultModel.Name);
+            Assert.Equal(1, resultModel.Id);
+        }
+
+        [Fact]
+        public void Should_BindTo_Existing_Instance_Using_Body_Serializer_And_BlackList()
+        {
+            //Given
+            var module = new ConfigurableNancyModule(c => c.Post("/instance", (_, m) =>
+            {
+                var model = new Stuff() { Id = 1 };
+                m.BindTo(model, new[]{"LastName"});
+                return model;
+            }));
+
+            var bootstrapper = new TestBootstrapper(config => config.Module(module));
+
+            var postmodel = new Stuff { Name = "Marsellus Wallace", LastName = "Smith"};
+
+            var browser = new Browser(bootstrapper);
+
+            //When
+            var result = browser.Post("/instance", with =>
+            {
+                with.JsonBody(postmodel, new JsonNetSerializer());
+                with.Accept("application/json");
+            });
+
+            var resultModel = result.Body.DeserializeJson<Stuff>();
+
+            //Then
+            Assert.Null(resultModel.LastName);
+        }
     }
     public class TestBootstrapper : ConfigurableBootstrapper
     {
@@ -81,6 +142,10 @@ namespace Nancy.Serialization.JsonNet.Tests
         }
 
         public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string LastName { get; set; }
 
         public Stuff(int id)
         {

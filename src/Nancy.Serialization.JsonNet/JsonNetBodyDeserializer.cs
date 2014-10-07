@@ -50,9 +50,39 @@
         /// <returns>Model instance</returns>
         public object Deserialize(string contentType, Stream bodyStream, BindingContext context)
         {
-            var deserializedObject = 
+            var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
-            
+
+            if (!context.DestinationType.IsCollection())
+            {
+                var existingInstance = false;
+                foreach (var property in context.ValidModelProperties)
+                {
+                    var existingValue = property.GetValue(context.Model, null);
+
+                    if (!IsDefaultValue(existingValue, property.PropertyType))
+                    {
+                        existingInstance = true;
+                        break;
+                    }
+                }
+
+                if (existingInstance)
+                {
+                    foreach (var property in context.ValidModelProperties)
+                    {
+                        var existingValue = property.GetValue(context.Model, null);
+
+                        if (IsDefaultValue(existingValue, property.PropertyType))
+                        {
+                            CopyPropertyValue(property, deserializedObject, context.Model);
+                        }
+                    }
+
+                    return context.Model;
+                }
+            }
+
             if (context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Except(context.ValidModelProperties).Any())
             {
                 return CreateObjectWithBlacklistExcluded(context, deserializedObject);
@@ -96,6 +126,13 @@
         private static void CopyPropertyValue(PropertyInfo property, object sourceObject, object destinationObject)
         {
             property.SetValue(destinationObject, property.GetValue(sourceObject, null), null);
+        }
+
+        private static bool IsDefaultValue(object existingValue, Type propertyType)
+        {
+            return propertyType.IsValueType
+                ? Equals(existingValue, Activator.CreateInstance(propertyType))
+                : existingValue == null;
         }
     }
 }
