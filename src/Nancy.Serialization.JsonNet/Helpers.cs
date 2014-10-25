@@ -2,8 +2,39 @@
 {
     using System;
 
+    using Nancy.Json;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     internal static class Helpers
     {
+        public static JsonSerializer DefaultSerializer()
+        {
+            JsonSerializerSettings settings;
+
+            if (JsonConvert.DefaultSettings != null)
+            {
+                settings = JsonConvert.DefaultSettings();
+            }
+            else
+            {
+                settings = new JsonSerializerSettings();
+            }
+
+            settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+
+            settings.ContractResolver = JsonSettings.RetainCasing
+                ? new DefaultContractResolver()
+                : new CamelCasePropertyNamesContractResolver();
+
+            settings.DateFormatHandling = JsonSettings.ISO8601DateFormat
+                ? DateFormatHandling.IsoDateFormat
+                : DateFormatHandling.MicrosoftDateFormat;
+
+            return JsonSerializer.Create(settings);
+        }
+
         /// <summary>
         /// Attempts to detect if the content type is JSON.
         /// Supports:

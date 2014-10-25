@@ -20,7 +20,7 @@
         /// </summary>
         public JsonNetBodyDeserializer()
         {
-            this.serializer = JsonSerializer.CreateDefault();
+            this.serializer = Helpers.DefaultSerializer();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@
         /// <returns>Model instance</returns>
         public object Deserialize(string contentType, Stream bodyStream, BindingContext context)
         {
-            var deserializedObject = 
+            var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
             var properties = 
