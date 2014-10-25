@@ -16,7 +16,7 @@
         /// <returns>True if content type is JSON, false otherwise</returns>
         public static bool IsJsonType(string contentType)
         {
-            if (string.IsNullOrEmpty(contentType))
+            if (String.IsNullOrEmpty(contentType))
             {
                 return false;
             }
@@ -24,6 +24,7 @@
             var contentMimeType = contentType.Split(';')[0];
 
             return contentMimeType.Equals("application/json", StringComparison.InvariantCultureIgnoreCase) ||
+                   contentMimeType.StartsWith("application/json-", StringComparison.InvariantCultureIgnoreCase) ||
                    contentMimeType.Equals("text/json", StringComparison.InvariantCultureIgnoreCase) ||
                   (contentMimeType.StartsWith("application/vnd", StringComparison.InvariantCultureIgnoreCase) &&
                    contentMimeType.EndsWith("+json", StringComparison.InvariantCultureIgnoreCase));
