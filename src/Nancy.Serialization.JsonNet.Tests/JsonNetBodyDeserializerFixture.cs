@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using Nancy.ModelBinding;
@@ -40,7 +41,7 @@
             var context = new BindingContext
             {
                 DestinationType = typeof (TestData),
-                ValidModelProperties = typeof (TestData).GetProperties(BindingFlags.Public | BindingFlags.Instance),
+                ValidModelBindingMembers = typeof (TestData).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(p => new BindingMemberInfo(p)),
             };
 
             // When

@@ -52,8 +52,16 @@
         {
             var deserializedObject = 
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
+
+            var properties = 
+                context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Select(p => new BindingMemberInfo(p));
             
-            if (context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Except(context.ValidModelProperties).Any())
+            var fields = 
+                context.DestinationType.GetFields(BindingFlags.Public | BindingFlags.Instance)
+                    .Select(f => new BindingMemberInfo(f));
+
+            if (properties.Concat(fields).Except(context.ValidModelBindingMembers).Any())
             {
                 return CreateObjectWithBlacklistExcluded(context, deserializedObject);
             }
@@ -78,14 +86,14 @@
 
         private static object CreateObjectWithBlacklistExcluded(BindingContext context, object deserializedObject)
         {
-            var returnObject = Activator.CreateInstance(context.DestinationType);
+            var returnObject = Activator.CreateInstance(context.DestinationType, true);
 
             if (context.DestinationType.IsCollection())
             {
                 return ConvertCollection(deserializedObject, context.DestinationType, context);
             }
 
-            foreach (var property in context.ValidModelProperties)
+            foreach (var property in context.ValidModelBindingMembers)
             {
                 CopyPropertyValue(property, deserializedObject, returnObject);
             }
@@ -93,9 +101,9 @@
             return returnObject;
         }
 
-        private static void CopyPropertyValue(PropertyInfo property, object sourceObject, object destinationObject)
+        private static void CopyPropertyValue(BindingMemberInfo property, object sourceObject, object destinationObject)
         {
-            property.SetValue(destinationObject, property.GetValue(sourceObject, null), null);
+            property.SetValue(destinationObject, property.GetValue(sourceObject));
         }
     }
 }
