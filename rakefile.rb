@@ -7,6 +7,7 @@ require 'rexml/document'
 NANCY_VERSION = ""
 OUTPUT = "build"
 CONFIGURATION = 'Release'
+CONFIGURATIONMONO = 'MonoRelease'
 SHARED_ASSEMBLY_INFO = 'dependencies/Nancy/src/SharedAssemblyInfo.cs'
 SOLUTION_FILE = 'src/Nancy.Serialization.JsonNet.sln'
 
@@ -18,6 +19,12 @@ end
 
 desc "Compiles solution and runs unit tests"
 task :default => [:clean, :version, :compile, :xunit, :publish, :package]
+
+desc "Compiles solution and runs unit tests for Mono"
+task :mono => [:clean, :version, :compilemono, :testmono]
+
+desc "Executes all tests with Mono"
+task :testmono => [:xunitmono]
 
 #Add the folders that should be cleaned as part of the clean task
 CLEAN.include(OUTPUT)
@@ -43,6 +50,12 @@ msbuild :compile => [:version] do |msb|
     msb.solution = SOLUTION_FILE
 end
 
+desc "Compile solution file for Mono"
+xbuild :compilemono => [:version] do |xb|
+  xb.solution = SOLUTION_FILE
+  xb.properties = { :configuration => CONFIGURATIONMONO, "TargetFrameworkProfile" => "", "TargetFrameworkVersion" => "v4.0" }
+end
+
 desc "Gathers output files and copies them to the output folder"
 task :publish => [:compile] do
     Dir.mkdir(OUTPUT)
@@ -56,6 +69,13 @@ xunit :xunit => :compile do |xunit|
     tests = FileList["src/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
 
     xunit.command = "tools/xunit/xunit.console.clr4.x86.exe"
+    xunit.assemblies = tests
+end
+
+desc "Executes xUnit tests using Mono"
+xunit :xunitmono => [] do |xunit|
+    tests = FileList["src/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
+    xunit.command = "tools/xunit/xunitmono.sh"
     xunit.assemblies = tests
 end
 
