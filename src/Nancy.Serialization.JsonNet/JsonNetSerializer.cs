@@ -14,7 +14,7 @@
         /// </summary>
         public JsonNetSerializer()
         {
-            this.serializer = JsonSerializer.CreateDefault();
+            this.serializer = Helpers.DefaultSerializer();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@
         {
             using (var writer = new JsonTextWriter(new StreamWriter(new UnclosableStreamWrapper(outputStream))))
             {
-                this.serializer.Serialize(writer, model);               
+                this.serializer.Serialize(writer, model);
             }
         }
     }

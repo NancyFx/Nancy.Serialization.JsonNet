@@ -5,8 +5,10 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Nancy.Extensions;
     using Nancy.ModelBinding;
+
     using Newtonsoft.Json;
 
     public class JsonNetBodyDeserializer : IBodyDeserializer
@@ -18,7 +20,7 @@
         /// </summary>
         public JsonNetBodyDeserializer()
         {
-            this.serializer = JsonSerializer.CreateDefault();
+            this.serializer = Helpers.DefaultSerializer();
         }
 
         /// <summary>
@@ -50,7 +52,7 @@
         /// <returns>Model instance</returns>
         public object Deserialize(string contentType, Stream bodyStream, BindingContext context)
         {
-            var deserializedObject = 
+            var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
             var properties = 
@@ -69,7 +71,7 @@
             return deserializedObject;
         }
 
-        private static object ConvertCollection(object items, Type destinationType, BindingContext context)
+        private static object ConvertCollection(object items, Type destinationType)
         {
             var returnCollection = Activator.CreateInstance(destinationType);
 
@@ -90,7 +92,7 @@
 
             if (context.DestinationType.IsCollection())
             {
-                return ConvertCollection(deserializedObject, context.DestinationType, context);
+                return ConvertCollection(deserializedObject, context.DestinationType);
             }
 
             foreach (var property in context.ValidModelBindingMembers)
