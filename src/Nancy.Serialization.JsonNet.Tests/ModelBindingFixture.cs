@@ -9,7 +9,7 @@ namespace Nancy.Serialization.JsonNet.Tests
     public class ModelBindingFixture
     {
         [Fact]
-        public void when_binding_to_a_class()
+        public void When_binding_to_a_class()
         {
             // Given
             var module = new ConfigurableNancyModule(c => c.Post("/stuff", (_, m) =>
@@ -17,8 +17,9 @@ namespace Nancy.Serialization.JsonNet.Tests
                 var stuff = m.Bind<Stuff>();
                 return stuff.Id.ToString();
             }));
+
             var bootstrapper = new TestBootstrapper(config => config.Module(module));
-            
+
             // When
             var browser = new Browser(bootstrapper);
             var result = browser.Post("/stuff", with =>
@@ -30,9 +31,9 @@ namespace Nancy.Serialization.JsonNet.Tests
             // Then
             Assert.Equal(1, int.Parse(result.Body.AsString()));
         }
-        
+
         [Fact]
-        public void when_binding_to_a_collection()
+        public void When_binding_to_a_collection()
         {
             // Given
             var module = new ConfigurableNancyModule(c => c.Post("/stuff", (_, m) =>
@@ -40,6 +41,7 @@ namespace Nancy.Serialization.JsonNet.Tests
                 var stuff = m.Bind<List<Stuff>>();
                 return stuff.Count.ToString();
             }));
+
             var bootstrapper = new TestBootstrapper(config => config.Module(module));
 
             // When
@@ -56,21 +58,18 @@ namespace Nancy.Serialization.JsonNet.Tests
     }
     public class TestBootstrapper : ConfigurableBootstrapper
     {
+        public TestBootstrapper()
+        {
+        }
+
         public TestBootstrapper(Action<ConfigurableBootstrapperConfigurator> configuration)
             : base(configuration)
         {
         }
 
-        public TestBootstrapper()
-        {
-        }
-
         protected override IEnumerable<Type> BodyDeserializers
         {
-            get
-            {
-                yield return typeof(JsonNetBodyDeserializer);
-            }
+            get { yield return typeof(JsonNetBodyDeserializer); }
         }
     }
 
@@ -84,7 +83,7 @@ namespace Nancy.Serialization.JsonNet.Tests
 
         public Stuff(int id)
         {
-            Id = id;
+            this.Id = id;
         }
     }
 }

@@ -8,6 +8,7 @@
     using Nancy.Extensions;
     using Nancy.ModelBinding;
     using Newtonsoft.Json;
+    using Responses.Negotiation;
 
     public class JsonNetBodyDeserializer : IBodyDeserializer
     {
@@ -33,31 +34,31 @@
         /// <summary>
         /// Whether the deserializer can deserialize the content type
         /// </summary>
-        /// <param name="contentType">Content type to deserialize</param>
+        /// <param name="mediaRange">Content type to deserialize</param>
         /// <param name="context">Current <see cref="BindingContext"/>.</param>
         /// <returns>True if supported, false otherwise</returns>
-        public bool CanDeserialize(string contentType, BindingContext context)
+        public bool CanDeserialize(MediaRange mediaRange, BindingContext context)
         {
-            return Helpers.IsJsonType(contentType);
+            return Helpers.IsJsonType(mediaRange);
         }
 
         /// <summary>
         /// Deserialize the request body to a model
         /// </summary>
-        /// <param name="contentType">Content type to deserialize</param>
+        /// <param name="mediaRange">Content type to deserialize</param>
         /// <param name="bodyStream">Request body stream</param>
         /// <param name="context">Current context</param>
         /// <returns>Model instance</returns>
-        public object Deserialize(string contentType, Stream bodyStream, BindingContext context)
+        public object Deserialize(MediaRange mediaRange, Stream bodyStream, BindingContext context)
         {
-            var deserializedObject = 
+            var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
-            var properties = 
+            var properties =
                 context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Select(p => new BindingMemberInfo(p));
-            
-            var fields = 
+
+            var fields =
                 context.DestinationType.GetFields(BindingFlags.Public | BindingFlags.Instance)
                     .Select(f => new BindingMemberInfo(f));
 
