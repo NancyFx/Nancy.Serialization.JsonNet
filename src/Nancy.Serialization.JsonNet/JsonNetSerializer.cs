@@ -4,6 +4,7 @@
     using System.IO;
     using Nancy.IO;
     using Newtonsoft.Json;
+    using Responses.Negotiation;
 
     public class JsonNetSerializer : ISerializer
     {
@@ -30,11 +31,11 @@
         /// <summary>
         /// Whether the serializer can serialize the content type
         /// </summary>
-        /// <param name="contentType">Content type to serialise</param>
+        /// <param name="mediaRange">Content type to serialise</param>
         /// <returns>True if supported, false otherwise</returns>
-        public bool CanSerialize(string contentType)
+        public bool CanSerialize(MediaRange mediaRange)
         {
-            return Helpers.IsJsonType(contentType);
+            return Helpers.IsJsonType(mediaRange);
         }
 
         /// <summary>
@@ -49,15 +50,15 @@
         /// <summary>
         /// Serialize the given model with the given contentType
         /// </summary>
-        /// <param name="contentType">Content type to serialize into</param>
+        /// <param name="mediaRange">Content type to serialize into</param>
         /// <param name="model">Model to serialize</param>
         /// <param name="outputStream">Output stream to serialize to</param>
         /// <returns>Serialised object</returns>
-        public void Serialize<TModel>(string contentType, TModel model, Stream outputStream)
+        public void Serialize<TModel>(MediaRange mediaRange, TModel model, Stream outputStream)
         {
             using (var writer = new JsonTextWriter(new StreamWriter(new UnclosableStreamWrapper(outputStream))))
             {
-                this.serializer.Serialize(writer, model);               
+                this.serializer.Serialize(writer, model);
             }
         }
     }
