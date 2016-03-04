@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0-*",
+
+    "description": "Provides JSON (de)serialization support using Newtonsoft.JsonNet.",
+    "authors": [ "Andreas Håkansson, Steven Robbins and contributors" ],
+    "tags": [ "Nancy", "Json", "JsonNet" ],
+    "projectUrl": "http://nancyfx.org",
+    "licenseUrl": "https://github.com/NancyFx/Nancy/blob/master/license.txt",
+    "iconUrl": "http://nancyfx.org/nancy-nuget.png",
+
+    "dependencies": {
+        "Nancy": { "target": "project" },
+        "Newtonsoft.Json": "7.0.1"
+    },
+
+    "frameworks": {
+        "net451": {}
+    }
+}
