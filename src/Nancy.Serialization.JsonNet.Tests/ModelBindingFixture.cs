@@ -2,6 +2,7 @@ namespace Nancy.Serialization.JsonNet.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Nancy.ModelBinding;
     using Nancy.Testing;
     using Xunit;
@@ -9,7 +10,7 @@ namespace Nancy.Serialization.JsonNet.Tests
     public class ModelBindingFixture
     {
         [Fact]
-        public void When_binding_to_a_class()
+        public async Task When_binding_to_a_class()
         {
             // Given
             var module = new ConfigurableNancyModule(c => c.Post("/stuff", (_, m) =>
@@ -22,7 +23,7 @@ namespace Nancy.Serialization.JsonNet.Tests
 
             // When
             var browser = new Browser(bootstrapper);
-            var result = browser.Post("/stuff", with =>
+            var result = await browser.Post("/stuff", with =>
             {
                 with.HttpRequest();
                 with.JsonBody(new Stuff(1), new JsonNetSerializer());
@@ -33,7 +34,7 @@ namespace Nancy.Serialization.JsonNet.Tests
         }
 
         [Fact]
-        public void When_binding_to_a_collection()
+        public async Task When_binding_to_a_collection()
         {
             // Given
             var module = new ConfigurableNancyModule(c => c.Post("/stuff", (_, m) =>
@@ -46,7 +47,7 @@ namespace Nancy.Serialization.JsonNet.Tests
 
             // When
             var browser = new Browser(bootstrapper);
-            var result = browser.Post("/stuff", with =>
+            var result = await browser.Post("/stuff", with =>
             {
                 with.HttpRequest();
                 with.JsonBody(new List<Stuff> {new Stuff(1), new Stuff(2)}, new JsonNetSerializer());
