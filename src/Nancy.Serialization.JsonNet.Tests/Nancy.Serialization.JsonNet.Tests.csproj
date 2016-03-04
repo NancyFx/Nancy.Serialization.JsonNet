@@ -57,15 +57,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.Authentication.Forms\Nancy.Authentication.Forms.csproj">
+    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.Authentication.Forms.MSBuild\Nancy.Authentication.Forms.csproj">
       <Project>{E8B18958-7C8A-4FBA-AF00-3041C34A20CE}</Project>
       <Name>Nancy.Authentication.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.Testing\Nancy.Testing.csproj">
+    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.Testing.MSBuild\Nancy.Testing.csproj">
       <Project>{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}</Project>
       <Name>Nancy.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy\Nancy.csproj">
+    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.MSBuild\Nancy.csproj">
       <Project>{34576216-0DCA-4B0F-A0DC-9075E75A676F}</Project>
       <Name>Nancy</Name>
     </ProjectReference>
@@ -81,7 +81,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
