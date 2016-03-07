@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Nancy.Serialization.JsonNet", "src\Nancy.Serialization.JsonNet\Nancy.Serialization.JsonNet.xproj", "{8A8138A6-7E3D-41CC-A582-6664752F8D53}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Nancy", "dependencies\Nancy\src\Nancy\Nancy.xproj", "{87C7C329-1824-4AC7-AF25-3D06068A01F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{163C656D-B5BA-4979-AA0D-830A36079092}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		NuGet.config = NuGet.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B1A132B-A5AF-4A16-9906-DAB0CC40366C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{96364ECA-D1E5-48D8-B4E7-BCC2F619BCA6}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Nancy.Serialization.JsonNet.Tests", "test\Nancy.Serialization.JsonNet.Tests\Nancy.Serialization.JsonNet.Tests.xproj", "{9EC1FBB1-F518-4949-96F0-2BC755F641B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A8138A6-7E3D-41CC-A582-6664752F8D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8138A6-7E3D-41CC-A582-6664752F8D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8138A6-7E3D-41CC-A582-6664752F8D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8138A6-7E3D-41CC-A582-6664752F8D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C7C329-1824-4AC7-AF25-3D06068A01F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C7C329-1824-4AC7-AF25-3D06068A01F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C7C329-1824-4AC7-AF25-3D06068A01F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C7C329-1824-4AC7-AF25-3D06068A01F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC1FBB1-F518-4949-96F0-2BC755F641B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC1FBB1-F518-4949-96F0-2BC755F641B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC1FBB1-F518-4949-96F0-2BC755F641B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC1FBB1-F518-4949-96F0-2BC755F641B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A8138A6-7E3D-41CC-A582-6664752F8D53} = {1B1A132B-A5AF-4A16-9906-DAB0CC40366C}
+		{87C7C329-1824-4AC7-AF25-3D06068A01F6} = {1B1A132B-A5AF-4A16-9906-DAB0CC40366C}
+		{9EC1FBB1-F518-4949-96F0-2BC755F641B7} = {96364ECA-D1E5-48D8-B4E7-BCC2F619BCA6}
+	EndGlobalSection
+EndGlobal

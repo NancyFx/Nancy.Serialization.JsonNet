@@ -9,7 +9,7 @@ OUTPUT = "build"
 CONFIGURATION = 'Release'
 CONFIGURATIONMONO = 'MonoRelease'
 SHARED_ASSEMBLY_INFO = 'dependencies/Nancy/SharedAssemblyInfo.cs'
-SOLUTION_FILE = 'src/Nancy.Serialization.JsonNet.sln'
+SOLUTION_FILE = 'Nancy.Serialization.JsonNet.sln'
 
 Albacore.configure do |config|
     config.log_level = :verbose
@@ -29,6 +29,7 @@ task :testmono => [:xunitmono]
 #Add the folders that should be cleaned as part of the clean task
 CLEAN.include(OUTPUT)
 CLEAN.include(FileList["src/**/#{CONFIGURATION}"])
+CLEAN.include(FileList["test/**/#{CONFIGURATION}"])
 
 desc "Update shared assemblyinfo file for the build"
 assemblyinfo :version => [:clean] do |asm|
@@ -66,16 +67,9 @@ end
 
 desc "Executes xUnit tests"
 xunit :xunit => :compile do |xunit|
-    tests = FileList["src/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
+    tests = FileList["test/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
 
     xunit.command = "dependencies/Nancy/tools/xunit/xunit.console.x86.exe"
-    xunit.assemblies = tests
-end
-
-desc "Executes xUnit tests using Mono"
-xunit :xunitmono => [] do |xunit|
-    tests = FileList["src/**/#{CONFIGURATION}/*.Tests.dll"].exclude(/obj\//)
-    xunit.command = "dependencies/Nancy/tools/xunit/xunitmono.sh"
     xunit.assemblies = tests
 end
 

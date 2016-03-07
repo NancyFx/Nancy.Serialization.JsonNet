@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,9 +49,15 @@
     <Compile Include="..\..\dependencies\Nancy\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Helpers.cs" />
-    <Compile Include="JsonNetBodyDeserializer.cs" />
-    <Compile Include="JsonNetSerializer.cs" />
+    <Compile Include="..\Nancy.Serialization.JsonNet\Helpers.cs">
+      <Link>Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\Nancy.Serialization.JsonNet\JsonNetBodyDeserializer.cs">
+      <Link>JsonNetBodyDeserializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Nancy.Serialization.JsonNet\JsonNetSerializer.cs">
+      <Link>JsonNetSerializer.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.MSBuild\Nancy.csproj">

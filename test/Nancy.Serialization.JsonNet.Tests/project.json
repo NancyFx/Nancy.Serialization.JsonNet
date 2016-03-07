@@ -1,0 +1,16 @@
+{
+    "dependencies": {
+        "Nancy": { "target": "project" },
+        "Nancy.Serialization.JsonNet": { "target": "project" },
+        "Nancy.Testing": { "target": "project" },
+        "Newtonsoft.Json": "7.0.1",
+        "xunit": "2.1.0",
+        "xunit.runner.dnx": "2.1.0-*"
+    },
+    "commands": {
+        "test": "xunit.runner.dnx"
+    },
+    "frameworks": {
+        "dnx451": {}
+    }
+}
