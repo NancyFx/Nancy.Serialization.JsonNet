@@ -18,10 +18,10 @@ Albacore.configure do |config|
 end
 
 desc "Compiles solution and runs unit tests"
-task :default => [:clean, :version, :compile, :xunit, :publish, :package]
+task :default => [:clean, :version, :nuget_restore, :compile, :xunit, :publish, :package]
 
 desc "Compiles solution and runs unit tests for Mono"
-task :mono => [:clean, :version, :compilemono, :testmono]
+task :mono => [:clean, :version, :nuget_restore_mono, :compilemono, :testmono]
 
 desc "Executes all tests with Mono"
 task :testmono => [:xunitmono]
@@ -30,6 +30,18 @@ task :testmono => [:xunitmono]
 CLEAN.include(OUTPUT)
 CLEAN.include(FileList["src/**/#{CONFIGURATION}"])
 CLEAN.include(FileList["test/**/#{CONFIGURATION}"])
+
+desc "Restore NuGet packages"
+exec :nuget_restore do |cmd|
+   cmd.command = "dependencies/Nancy/tools/nuget/NuGet.exe"
+   cmd.parameters = ["restore #{SOLUTION_FILE}"]
+end
+
+desc "Restore NuGet packages on Mono"
+exec :nuget_restore_mono do |cmd|
+  cmd.command = "mono"
+  cmd.parameters = ["dependencies/Nancy/tools/nuget/NuGet.exe restore #{SOLUTION_FILE}"]
+end
 
 desc "Update shared assemblyinfo file for the build"
 assemblyinfo :version => [:clean] do |asm|
