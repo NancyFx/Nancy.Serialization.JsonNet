@@ -18,10 +18,10 @@ Albacore.configure do |config|
 end
 
 desc "Compiles solution and runs unit tests"
-task :default => [:clean, :version, :nuget_restore, :compile, :xunit, :publish, :package]
+task :default => [:clean, :version, :compile, :xunit, :publish, :package]
 
 desc "Compiles solution and runs unit tests for Mono"
-task :mono => [:clean, :version, :nuget_restore_mono, :compilemono, :testmono]
+task :mono => [:clean, :version, :compilemono, :testmono]
 
 desc "Executes all tests with Mono"
 task :testmono => [:xunitmono]
@@ -57,14 +57,14 @@ assemblyinfo :version => [:clean] do |asm|
 end
 
 desc "Compile solution file"
-msbuild :compile => [:version] do |msb|
+msbuild :compile => [:nuget_restore, :version] do |msb|
     msb.properties :configuration => CONFIGURATION
     msb.targets :Clean, :Build
     msb.solution = SOLUTION_FILE
 end
 
 desc "Compile solution file for Mono"
-xbuild :compilemono => [:version] do |xb|
+xbuild :compilemono => [:nuget_restore_mono, :version] do |xb|
   xb.solution = SOLUTION_FILE
   xb.properties = { :configuration => CONFIGURATIONMONO, "TargetFrameworkProfile" => "", "TargetFrameworkVersion" => "v4.0" }
 end
