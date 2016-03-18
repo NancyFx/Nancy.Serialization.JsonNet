@@ -14,7 +14,7 @@
     <projectUrl>http://nancyfx.org</projectUrl>
     <dependencies>
       <dependency id="Nancy" />
-      <dependency id="Newtonsoft.Json" />
+      <dependency id="Newtonsoft.Json" version="8.0.3" />
     </dependencies>
     <tags>Nancy Json JsonNet</tags>
   </metadata>
