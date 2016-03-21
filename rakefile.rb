@@ -5,6 +5,7 @@ require 'rake/clean'
 require 'rexml/document'
 
 NANCY_VERSION = ""
+NANCY_INFORMATIONAL_VERSION = ""
 OUTPUT = "build"
 CONFIGURATION = 'Release'
 CONFIGURATIONMONO = 'MonoRelease'
@@ -45,9 +46,11 @@ end
 
 desc "Update shared assemblyinfo file for the build"
 assemblyinfo :version => [:clean] do |asm|
-    NANCY_VERSION = get_assembly_version SHARED_ASSEMBLY_INFO
+    NANCY_VERSION = get_assembly_version SHARED_ASSEMBLY_INFO, "AssemblyVersion"
+    NANCY_INFORMATIONAL_VERSION = get_assembly_version SHARED_ASSEMBLY_INFO, "AssemblyInformationalVersion"
 
     asm.version = NANCY_VERSION
+    asm.informational_version = NANCY_INFORMATIONAL_VERSION
     asm.company_name = "Nancy"
     asm.product_name = "Nancy.Serialization.JsonNet"
     asm.title = "Nancy.Serialization.JsonNet"
@@ -117,11 +120,11 @@ task :nuget_package => [:publish] do
     nuspecs.each do |nuspec|
         update_xml nuspec do |xml|
             # Override the version number in the nuspec file with the one from this rake file (set above)
-            xml.root.elements["metadata/version"].text = NANCY_VERSION
+            xml.root.elements["metadata/version"].text = NANCY_INFORMATIONAL_VERSION
 
             # Override the Nancy dependencies to match this version
             nancy_dependencies = xml.root.elements["metadata/dependencies/dependency[contains(@id,'Nancy')]"]
-            nancy_dependencies.attributes["version"] = "#{NANCY_VERSION}" unless nancy_dependencies.nil?
+            nancy_dependencies.attributes["version"] = "#{NANCY_INFORMATIONAL_VERSION}" unless nancy_dependencies.nil?
 
             # Override common values
             xml.root.elements["metadata/authors"].text = "Andreas Håkansson, Steven Robbins and contributors"
@@ -144,7 +147,7 @@ end
 
 desc "Pushes the nuget packages in the nuget folder up to the nuget gallary and symbolsource.org. Also publishes the packages into the feeds."
 task :nuget_publish, :api_key do |task, args|
-    nupkgs = FileList["#{OUTPUT}/nuget/*#{NANCY_VERSION}.nupkg"]
+    nupkgs = FileList["#{OUTPUT}/nuget/*#{NANCY_INFORMATIONAL_VERSION}.nupkg"]
     nupkgs.each do |nupkg|
         puts "Pushing #{nupkg}"
         nuget_push = NuGetPush.new
@@ -173,12 +176,12 @@ def update_xml(xml_path)
     xml_file.close
 end
 
-def get_assembly_version(file)
+def get_assembly_version(file, attribute)
   return '' if file.nil?
 
   File.open(file, 'r') do |file|
     file.each_line do |line|
-      result = /\[assembly: AssemblyVersion\(\"(.*?)\"\)\]/.match(line)
+      result = /\[assembly: #{Regexp.quote(attribute)}\(\"(.*?)\"\)\]/.match(line)
 
       return result[1] if !result.nil?
     end
