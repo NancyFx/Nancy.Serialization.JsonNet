@@ -57,5 +57,37 @@
             Assert.Equal("some string value", actualData.SomeString);
             Assert.Equal(guid, actualData.SomeGuid);
         }
+
+        [Fact]
+        public void when_deserializing_while_the_body_stream_was_not_at_position_zero()
+        {
+            // Repro of https://github.com/NancyFx/Nancy.Serialization.JsonNet/issues/22
+
+            // Given
+            JsonConvert.DefaultSettings = JsonNetSerializerFixture.GetJsonSerializerSettings;
+
+            var guid = Guid.NewGuid();
+            string source = string.Format("{{\"someString\":\"some string value\",\"someGuid\":\"{0}\"}}", guid);
+
+            var context = new BindingContext
+            {
+                DestinationType = typeof(TestData),
+                ValidModelBindingMembers = typeof(TestData).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(p => new BindingMemberInfo(p)),
+            };
+
+            // When
+            object actual;
+            using (var bodyStream = new MemoryStream(Encoding.UTF8.GetBytes(source)))
+            {
+                IBodyDeserializer sut = new JsonNetBodyDeserializer();
+                bodyStream.Position = 1;
+                actual = sut.Deserialize("application/json", bodyStream, context);
+            }
+
+            // Then
+            var actualData = Assert.IsType<TestData>(actual);
+            Assert.Equal("some string value", actualData.SomeString);
+            Assert.Equal(guid, actualData.SomeGuid);
+        }
     }
 }

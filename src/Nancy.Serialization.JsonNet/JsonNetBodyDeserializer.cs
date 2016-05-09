@@ -51,6 +51,8 @@
         /// <returns>Model instance</returns>
         public object Deserialize(MediaRange mediaRange, Stream bodyStream, BindingContext context)
         {
+            bodyStream.Position = 0;
+
             var deserializedObject =
                 this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
