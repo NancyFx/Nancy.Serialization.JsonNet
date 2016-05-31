@@ -7,12 +7,12 @@
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>9ec1fbb1-f518-4949-96f0-2bc755f641b7</ProjectGuid>
-    <RootNamespace>Nancy.Serialization.JsonNet</RootNamespace>
+    <RootNamespace>Nancy.Serialization.JsonNet.Tests</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AssemblyName>Nancy.Serialization.JsonNet</AssemblyName>
+    <AssemblyName>Nancy.Serialization.JsonNet.Tests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
