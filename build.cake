@@ -175,7 +175,6 @@ Task("Nuke-Symbol-Packages")
 
 Task("Package-NuGet")
   .Description("Generates NuGet packages for each project that contains a nuspec")
-  .IsDependentOn("Publish")
   .Does(() =>
 {
   var projects = GetFiles("src/**/*.xproj");
