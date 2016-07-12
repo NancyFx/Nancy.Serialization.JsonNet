@@ -210,9 +210,8 @@ Task("Publish-NuGet")
 
 public string GetNancyVersion(FilePath filePath)
 {
-  var project = Newtonsoft.Json.Linq.JObject.Parse(
-      System.IO.File.ReadAllText(filePath.FullPath, Encoding.UTF8));
-  return project["version"].ToString();
+  var project = System.IO.File.ReadAllText(filePath.FullPath, Encoding.UTF8);
+  return System.Text.RegularExpressions.Regex.Match(project, "\"version\":\\s*\"(.+)\"").Groups[1].ToString();
 }
 
 Task("Default")
