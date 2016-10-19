@@ -1,13 +1,37 @@
-[CmdletBinding()]
-Param(
-    [string]$Target = "Default",
-    [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
-    [string]$Verbosity = "Verbose",
-    [switch]$WhatIf,
-    [string]$NuGetSource = $null,
-    [string]$NuGetApiKey = $null,
-)
+# Define constants.
+$PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition;
+$Script = Join-Path $PSScriptRoot "build.cake"
+$ToolPath = Join-Path $PSScriptRoot "dependencies/Nancy/tools"
+$NuGetPath = Join-Path $ToolPath "nuget/NuGet.exe"
+$CakeVersion = "0.13.0"
+$CakePath = Join-Path $ToolPath "Cake.$CakeVersion/Cake.exe"
+$Target = "Default"
+$Verbosity = "Verbose"
+$DryRun
+$Arguments = @{}
 
+for($i=0; $i -lt $args.length; $i+=1)
+{
+  if ($args[$i].ToLower() -eq "-target")
+  {
+    $Target = $args[$i+1]
+    $i+=1
+  }
+  ElseIf ($args[$i].ToLower() -eq "-verbosity")
+  {
+    $Verbosity = $args[$i+1]
+    $i+=1
+  }
+  ElseIf ($args[$i].ToLower() -eq "-dryrun")
+  {
+    $DryRun = "-dryrun"
+  }
+  Else
+  {
+    $Arguments.Add($args[$i], $args[$i+1])
+    $i+=1
+  }
+}
 ######################################################################################################
 
 Function Install-Dotnet()
@@ -41,8 +65,8 @@ Function Install-Dotnet()
     }
 
     # Run the dotnet CLI install
-    Write-Output "Installing Dotnet CLI version 1.0.0-preview1-002702..."
-    & .\.dotnet\dotnet-install.ps1 -Channel beta -Version 1.0.0-preview1-002702
+    Write-Output "Installing Dotnet CLI version 1.0.0-preview2-003131..."
+    & .\.dotnet\dotnet-install.ps1 -Channel beta -Version 1.0.0-preview2-003131
 
     # Add the dotnet folder path to the process. This gets skipped
     # by Install-DotNetCli if it's already installed.
@@ -65,14 +89,6 @@ Function Remove-PathVariable([string]$VariableToRemove)
 
 Write-Host "Preparing to run build script..."
 
-# Define constants.
-$PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition;
-$Script = Join-Path $PSScriptRoot "build.cake"
-$ToolPath = Join-Path $PSScriptRoot "dependencies/Nancy/tools"
-$NuGetPath = Join-Path $ToolPath "nuget/NuGet.exe"
-$CakeVersion = "0.13.0"
-$CakePath = Join-Path $ToolPath "Cake.$CakeVersion/Cake.exe"
-
 # Install Dotnet CLI.
 Install-Dotnet
 
@@ -85,19 +101,11 @@ if (!(Test-Path $CakePath)) {
     }
 }
 
-# Is this a dry run?
-$UseDryRun = "";
-if($WhatIf.IsPresent) {
-    $UseDryRun = "-dryrun"
-}
-
 # Build the argument list.
-$Arguments = @{
-    source=$NuGetSource;
-    apikey=$NuGetApiKey;
-}.GetEnumerator() | %{"--{0}=`"{1}`"" -f $_.key, $_.value };
+$Arguments = $Arguments.GetEnumerator() | %{"{0}=`"{1}`"" -f $_.key, $_.value };
 
 # Start Cake.
 Write-Host "Running build script..."
-Invoke-Expression "& `"$CakePath`" `"$Script`" -target=`"$Target`" -verbosity=`"$Verbosity`" $UseDryRun $Arguments"
+Write-Host "`"$CakePath`" `"$Script`" -target=`"$Target`" -verbosity=`"$Verbosity`" $DryRun $Arguments"
+Invoke-Expression "& `"$CakePath`" `"$Script`" -target=`"$Target`" -verbosity=`"$Verbosity`" $DryRun $Arguments"
 exit $LASTEXITCODE
