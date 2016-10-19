@@ -41,6 +41,7 @@ Task("Update-Version")
   .Description("Update version")
   .Does(() =>
 {
+  Information("Setting version to " + version);
   if(string.IsNullOrWhiteSpace(version)) {
     throw new CakeException("No version specified!");
   }
