@@ -21,3 +21,4 @@ packages/
 project.lock.json
 TestAssembly.dll
 tools/
+.dotnet/
