@@ -1,1 +1,1 @@
-& dependencies/Nancy/build.ps1 $argumentList
+& dependencies/Nancy/build.ps1 $args
