@@ -1,4 +1,4 @@
-{
+﻿{
     "version": "2.0.0-*",
     "description": "Provides JSON (de)serialization support using Newtonsoft.JsonNet.",
     "authors": [ "Andreas Håkansson, Steven Robbins and contributors" ],
@@ -16,7 +16,7 @@
     },
 
     "frameworks": {
-      "net452": {},
-      "netstandard1.6":  {} 
+        "net452": { },
+        "netstandard1.6": { }
     }
 }
