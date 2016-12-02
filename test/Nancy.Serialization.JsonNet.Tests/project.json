@@ -5,7 +5,7 @@
         "Nancy": { "target": "project" },
         "Nancy.Serialization.JsonNet": { "target": "project" },
         "Nancy.Testing": { "target": "project" },
-        "Newtonsoft.Json": "8.0.3",
+        "Newtonsoft.Json": "9.0.1",
         "xunit": "2.1.0"
     },
 
