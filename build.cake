@@ -188,39 +188,40 @@ Task("Package-NuGet")
 });
 
 Task("Publish-NuGet")
-  .Description("Pushes the nuget packages in the nuget folder to a NuGet source. Also publishes the packages into the feeds.")
-  .Does(() =>
+    .Description("Pushes the nuget packages in the nuget folder to a NuGet source. Also publishes the packages into the feeds.")
+    .Does(() =>
 {
-  // Make sure we have an API key.
-  if(string.IsNullOrWhiteSpace(apiKey)){
-    throw new CakeException("No NuGet API key provided.");
-  }
+    if(string.IsNullOrWhiteSpace(apiKey)){
+        throw new CakeException("No NuGet API key provided.");
+    }
 
-  // Upload every package to the provided NuGet source (defaults to nuget.org).
-  var packages = GetFiles(outputNuGet.Path.FullPath + "/*" + version + ".nupkg");
-  foreach(var package in packages)
-  {
-    NuGetPush(package, new NuGetPushSettings {
-      Source = source,
-      ApiKey = apiKey
-    });
-  }
+    var packages =
+        GetFiles(outputNuGet.Path.FullPath + "/*.nupkg") -
+        GetFiles(outputNuGet.Path.FullPath + "/*.symbols.nupkg");
+
+    foreach(var package in packages)
+    {
+        NuGetPush(package, new NuGetPushSettings {
+            Source = source,
+            ApiKey = apiKey
+        });
+    }
 });
 
 ///////////////////////////////////////////////////////////////
 
 public string GetNancyVersion(FilePath filePath)
 {
-  var project = System.IO.File.ReadAllText(filePath.FullPath, Encoding.UTF8);
-  return System.Text.RegularExpressions.Regex.Match(project, "\"version\":\\s*\"(.+)\"").Groups[1].ToString();
+    var project = System.IO.File.ReadAllText(filePath.FullPath, Encoding.UTF8);
+    return System.Text.RegularExpressions.Regex.Match(project, "\"version\":\\s*\"(.+)\"").Groups[1].ToString();
 }
 
 Task("Default")
-  .IsDependentOn("Test")
-  .IsDependentOn("Package-NuGet");
+    .IsDependentOn("Test")
+    .IsDependentOn("Package-NuGet");
 
 Task("Mono")
-  .IsDependentOn("Test");
+    .IsDependentOn("Test");
 
 ///////////////////////////////////////////////////////////////
 
