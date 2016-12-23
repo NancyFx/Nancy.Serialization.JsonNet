@@ -15,7 +15,7 @@ install:
 - git submodule update --init --recursive
 
 build_script:
-- ps: .\build.ps1 -verbosity diagnostic
+- ps: .\build.ps1 -verbosity=normal
 
 artifacts:
 - path: build\nuget\*.nupkg
