@@ -15,6 +15,7 @@
         /// </summary>
         public JsonNetSerializer()
         {
+            this.ContractResolver = new CamelCasePropertyNamesContractResolver()
             this.serializer = JsonSerializer.CreateDefault();
         }
 
