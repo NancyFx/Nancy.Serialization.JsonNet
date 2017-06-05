@@ -17,6 +17,7 @@ build/
 _[Rr]e[Ss]harper.*/
 *.tss
 .vs/
+.vscode/
 packages/
 project.lock.json
 TestAssembly.dll
