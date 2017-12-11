@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -13,6 +15,12 @@
     public class JsonNetBodyDeserializer : IBodyDeserializer
     {
         private readonly JsonSerializer serializer;
+
+        private static MethodInfo arrayBuilderMethodDefinition = typeof(JsonNetBodyDeserializer)
+            .GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
+            .Single(method => method.Name == "ArrayBuilder");
+
+        private static readonly ConcurrentDictionary<Type, Func<object, BindingContext, object>> arrayBuilders = new ConcurrentDictionary<Type, Func<object, BindingContext, object>>();
 
         /// <summary>
         /// Empty constructor if no converters are needed
@@ -75,6 +83,29 @@
             return deserializedObject;
         }
 
+        private static object ArrayBuilder<T>(object items, BindingContext context)
+        {
+            var returnCollection = (List<T>)ConvertCollection(items, typeof(List<T>), context);
+
+            return returnCollection.ToArray();
+        }
+
+        private static Func<object, BindingContext, object> GetArrayBuilder(Type destinationType)
+        {
+            return arrayBuilders.GetOrAdd(
+                destinationType.GetElementType(),
+                (elementType) => arrayBuilderMethodDefinition
+                    .MakeGenericMethod(elementType)
+                    .CreateDelegate(typeof(Func<object, BindingContext, object>)) as Func<object, BindingContext, object>);
+        }
+
+        private static object ConvertArray(object items, Type destinationType, BindingContext context)
+        {
+            var builder = GetArrayBuilder(destinationType);
+
+            return builder(items, context);
+        }
+
         private static object ConvertCollection(object items, Type destinationType, BindingContext context)
         {
             var returnCollection = Activator.CreateInstance(destinationType);
@@ -92,12 +123,17 @@
 
         private static object CreateObjectWithBlacklistExcluded(BindingContext context, object deserializedObject)
         {
-            var returnObject = Activator.CreateInstance(context.DestinationType, true);
+            if (context.DestinationType.IsArray())
+            {
+                return ConvertArray(deserializedObject, context.DestinationType, context);
+            }
 
             if (context.DestinationType.IsCollection())
             {
                 return ConvertCollection(deserializedObject, context.DestinationType, context);
             }
+
+            var returnObject = Activator.CreateInstance(context.DestinationType, true);
 
             foreach (var property in context.ValidModelBindingMembers)
             {
